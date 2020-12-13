@@ -15,7 +15,25 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import include, url
+from rest_framework import routers
+from unthoughtApp import views
+
+
+router = routers.DefaultRouter()
+
+router.register(r'User',views.UserViewSet)
+router.register(r'Member',views.MemberViewSet)
+router.register(r'MemberDp',views.MemberDpViewSet)
+router.register(r'Events',views.EventsViewSet)
+router.register(r'EventsPics',views.EventsPicsViewSet)
+router.register(r'Post',views.PostsViewSet)
+router.register(r'SavePostMember',views.SavePostMemberViewSet)
+router.register(r'LikedPostMember',views.LikedPostMemberViewSet)
+router.register(r'ProjectMember',views.ProjectMemberViewSet)
+router.register(r'PostPic',views.PostPicViewSet)
 
 urlpatterns = [
+    url(r'^',include(router.urls)),
     path('admin/', admin.site.urls),
 ]
