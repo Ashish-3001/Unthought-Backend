@@ -1,0 +1,72 @@
+1.login
+    post (user/paasword)
+    validation from user table
+    respose(T/F)
+
+2. Home(user post)
+    post(specilization for user)
+    get from T5
+    sort data according to specilization
+    respose(sorted data)
+
+3. Home(user Ppl)
+    post(specilization)
+    get from T2
+    sort data according to specilization
+    respose(sorted data)
+
+4. Post Details
+    get(url/post-id)
+    user data = get from T5
+    respose(data)
+
+5. Search Bar(Post)
+    post(specilization)
+    get from T5
+    sort data according to specilization
+    respose(sorted data)
+
+6.  Search Bar(User)
+    post(username or specilization)
+    get from T2
+    sort data according to specilization or username
+    respose(sorted data)
+
+7. Search Bar(Mentor)
+    post(username or specilization)
+    get from T6
+    sort data according to specilization or username
+    respose(sorted data)
+
+8. active Zone(Group Home)
+    get(url/f=user-id)
+    get his posts from T5.1
+    respose(data)
+
+9. Progress Bar(post)
+    get(url/user-id)
+    get details from T5
+    respose(data)
+
+10.Progress(Members)
+    get(url/f=user-id)
+    get the Members from T5.1
+    respose(data)
+
+11. Events
+    post(filter)
+    get data from T3
+    if(filter==rating)
+        sort data according to rating
+    else if(filter=date)
+        sort data according to date
+    else if(filter=specilization)
+        sort date according to specilization
+    respose(date)
+
+
+
+
+
+
+

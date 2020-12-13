@@ -9,8 +9,8 @@ class User(models.Model):
     user_login_date = models.DateField(auto_now=True)
 
 class Member(models.Model):
-    user_name = models.CharField(max_length=50)
-    User_id = models.OneToOneField(User, on_delete=models.CASCADE)  
+    User_id = models.OneToOneField(User, on_delete=models.CASCADE)
+    user_name = models.CharField(max_length=50)  
     Member_name = models.CharField(max_length=50)
     gender = models.CharField(max_length=8)
     dob = models.DateField(auto_now=True)
