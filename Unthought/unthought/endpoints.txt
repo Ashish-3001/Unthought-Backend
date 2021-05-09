@@ -1,15 +1,15 @@
-1.login
+1.login // Completed 
     post (user/paasword)
     validation from user table
     respose(T/F)
 
-2. Home(user post)
+2. Home(user post) // Completed 
     post(specilization for user)
     get from T5
     sort data according to specilization
     respose(sorted data)
 
-3. Home(user Ppl)
+3. Home(user Ppl) // Completed 
     post(specilization)
     get from T2
     sort data according to specilization

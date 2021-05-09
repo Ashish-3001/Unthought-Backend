@@ -25,8 +25,8 @@ class MemberSerializers(serializers.ModelSerializer):
         model = Member
         fields = (
         'id',
-        'user_name ',
-        'User_id ',
+        'unique_name',
+        'User_id',
         'Member_name',
         'gender',
         'dob',
@@ -66,7 +66,8 @@ class EventsSerializers(serializers.ModelSerializer):
         'contact_no',
         'email',
         'website',
-        'desc')
+        'desc',
+        'rating')
 
 class EventsPicsSerializers(serializers.ModelSerializer):
     class Meta:
@@ -76,6 +77,9 @@ class EventsPicsSerializers(serializers.ModelSerializer):
         'event_id',
         'event_name',
         'event_mode',
+        'rating',
+        'date',
+        'categories',
         'event_dp',
         'event_pic1',
         'event_pic2')
@@ -86,7 +90,7 @@ class PostSerializers(serializers.ModelSerializer):
         fields = (
         'id',
         'admin_id',
-        'admin_name ',
+        'admin_name',
         'admin_designation',
         'title_of_post',
         'short_desc',
@@ -108,8 +112,9 @@ class SavePostMemberSerializers(serializers.ModelSerializer):
         'id',
         'member_id',
         'member_name',
-        'post_id ',
-        'post_title')
+        'post_id',
+        'post_title',
+        'saved')
 
 class LikedPostMemberSerializers(serializers.ModelSerializer):
     class Meta:
@@ -118,8 +123,9 @@ class LikedPostMemberSerializers(serializers.ModelSerializer):
         'id',
         'member_id',
         'member_name',
-        'post_id ',
-        'post_title')
+        'post_id',
+        'post_title',
+        'liked')
 
 class ProjectMemberSerializers(serializers.ModelSerializer):
     class Meta:
@@ -142,3 +148,59 @@ class PostPicSerializers(serializers.ModelSerializer):
         'post_dp',
         'post_pic1',
         'post_pic2')
+
+class LoginValidateSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+        'user_name',
+        'password')
+
+class HomePostSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = (
+        'pri_specification_submain',
+        'sec_specification_submain',
+        'pri_specification_main',
+        'sec_specification_main',
+        )
+
+class PeopleInterestedSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = (
+        'pri_specification_submain',
+        'sec_specification_submain',
+        )
+
+class EventsNearMeSerializers(serializers.ModelSerializer):
+    sort_filter = serializers.CharField(max_length=15) 
+    class Meta:
+        model = Member
+        fields = (
+        'pri_specification_submain',
+        'sec_specification_submain',
+        'sort_filter',
+        )
+
+class HomePostImgSerializers(serializers.ModelSerializer):
+    sorted_post_id = serializers.CharField(max_length=20)
+    class Meta:
+        model = Member
+        fields = (
+            'sorted_post_id',
+        )
+
+class HomeLikedAndSavedPostCheckSerializers(serializers.ModelSerializer):
+    post_id = serializers.IntegerField()
+    member_id = serializers.IntegerField()
+    action = serializers.CharField(max_length=20)
+    class Meta:
+        model = Post
+        fields = (
+            'post_id',
+            'member_id',
+            'action',
+        )
+
