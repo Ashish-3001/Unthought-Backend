@@ -72,6 +72,7 @@ class Post(models.Model):
     progress_status = models.IntegerField(default=0)
     no_of_links = models.IntegerField(default=0)
     no_of_saved = models.IntegerField(default=0)
+    active = models.BooleanField(default=True)
 
 class SavePostMember(models.Model):
     member_id = models.ForeignKey(Member, on_delete=models.CASCADE)
@@ -95,6 +96,7 @@ class ProjectMember(models.Model):
     user_type = models.CharField(max_length=10)
     pri_specification_submain = models.CharField(max_length=50)
     progress_status = models.IntegerField(default=0)
+    active = models.BooleanField(default=True)
 
 class PostPic(models.Model):
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -102,4 +104,4 @@ class PostPic(models.Model):
     post_dp = models.ImageField(upload_to='postPic/', height_field=None, width_field=None, default='Images/None/No0img.jpg')
     post_pic1 = models.ImageField(upload_to='postPic/', height_field=None, width_field=None, default='Images/None/No0img.jpg')
     post_pic2 = models.ImageField(upload_to='postPic/', height_field=None, width_field=None, default='Images/None/No0img.jpg')    
-
+    active = models.BooleanField(default=True)

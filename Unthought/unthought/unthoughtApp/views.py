@@ -56,6 +56,9 @@ class MemberDpViewSet(viewsets.ModelViewSet):
     queryset = MemberDp.objects.all()
     serializer_class = MemberDpSerializers
 
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,filters.OrderingFilter,filters.SearchFilter)
+    filter_fields = ('member_id',)
+
 class EventsViewSet(viewsets.ModelViewSet):
     
     queryset = Events.objects.all()
@@ -76,7 +79,7 @@ class PostsViewSet(viewsets.ModelViewSet):
 
     filter_backends = (django_filters.rest_framework.DjangoFilterBackend,filters.OrderingFilter,filters.SearchFilter)
     search_fields = ('requirement1','requirement2','requirement3','requirement4')
-    filter_fields = ('admin_id',)
+    filter_fields = ('admin_id','active')
 
 class SavePostMemberViewSet(viewsets.ModelViewSet):
     
@@ -100,7 +103,7 @@ class ProjectMemberViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectMemberSerializers
     
     filter_backends = (django_filters.rest_framework.DjangoFilterBackend,filters.OrderingFilter,filters.SearchFilter)
-    filter_fields = ('post_id','user_id')
+    filter_fields = ('post_id','user_id','active')
 
 class PostPicViewSet(viewsets.ModelViewSet):
     
@@ -259,7 +262,6 @@ class HomePostImg(APIView):
         
         if sorted_post_id_char:
             sorted_post_id = sorted_post_id_char.split(',')
-            print(sorted_post_id)
 
             my_filter_qs = Q()
             for post_id in sorted_post_id[:-1]:

@@ -103,7 +103,8 @@ class PostSerializers(serializers.ModelSerializer):
         'workdone',
         'progress_status',
         'no_of_links',
-        'no_of_saved')
+        'no_of_saved',
+        'active')
 
 class SavePostMemberSerializers(serializers.ModelSerializer):
     class Meta:
@@ -136,7 +137,8 @@ class ProjectMemberSerializers(serializers.ModelSerializer):
         'post_title',
         'user_id',
         'user_name',
-        'user_type')
+        'user_type',
+        'active')
 
 class PostPicSerializers(serializers.ModelSerializer):
     class Meta:
@@ -147,7 +149,8 @@ class PostPicSerializers(serializers.ModelSerializer):
         'post_title',
         'post_dp',
         'post_pic1',
-        'post_pic2')
+        'post_pic2',
+        'active')
 
 class LoginValidateSerializers(serializers.ModelSerializer):
     class Meta:
