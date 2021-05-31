@@ -34,6 +34,10 @@ router.register(r'SavePostMember',views.SavePostMemberViewSet)
 router.register(r'LikedPostMember',views.LikedPostMemberViewSet)
 router.register(r'ProjectMember',views.ProjectMemberViewSet)
 router.register(r'PostPic',views.PostPicViewSet)
+router.register(r'GroupChat',views.GroupTextViewSet)
+router.register(r'IndividualChatList',views.IndividualChatListViewSet)
+router.register(r'IndividualText',views.IndividualTextViewSet)
+router.register(r'Help',views.HelpViewSet)
 
 urlpatterns = [
     url(r'^',include(router.urls)),
@@ -44,5 +48,8 @@ urlpatterns = [
     path('sorted-people-img/', views.HomePostMemberImg.as_view()),
     path('People_interested/', views.PeopleInterested.as_view()),
     path('events_near_you/', views.EventsNearMe.as_view()),
+    path('get_texts/', views.RetriveChats.as_view()),
+    path('individual_chat_list/', views.RetriveIndividualChatList.as_view()),
+    path('chat/', include('active_zone.urls')),
     path('admin/', admin.site.urls),
 ]+static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

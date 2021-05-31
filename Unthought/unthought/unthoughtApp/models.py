@@ -1,3 +1,4 @@
+from django.core.checks import messages
 from django.db import models
 
 # Create your models here.
@@ -105,3 +106,34 @@ class PostPic(models.Model):
     post_pic1 = models.ImageField(upload_to='postPic/', height_field=None, width_field=None, default='Images/None/No0img.jpg')
     post_pic2 = models.ImageField(upload_to='postPic/', height_field=None, width_field=None, default='Images/None/No0img.jpg')    
     active = models.BooleanField(default=True)
+
+class GroupText(models.Model):
+    post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
+    member_id = models.ForeignKey(Member, on_delete=models.CASCADE)  
+    member_name = models.CharField(max_length=50)
+    createdAt = models.DateTimeField(auto_now=True)
+    message = models.CharField(max_length=500)
+
+class IndividualChatList(models.Model):
+    member_id_1 = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='member_id_1')  
+    member_name_1 = models.CharField(max_length=50)
+    member_id_2 = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='member_id_2')  
+    member_name_2 = models.CharField(max_length=50)
+    last_message = models.CharField(max_length=500)
+    last_message_date = models.DateTimeField(auto_now=True)
+    member_1_seen = models.BooleanField(default=False)
+    member_2_seen = models.BooleanField(default=False)
+    
+class IndividualText(models.Model):
+    reciver_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='reciver_id')
+    sender_id = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='sender_id_2')
+    sender_name = models.CharField(max_length=50)
+    createdAt = models.DateTimeField(auto_now=True)
+    message = models.CharField(max_length=500)
+
+class Help(models.Model):
+    user_id = models.IntegerField()
+    user_type = models.CharField(max_length=10)
+    user_name = models.CharField(max_length=50)
+    user_number = models.CharField(max_length=10)
+    user_desc = models.CharField(max_length=900)

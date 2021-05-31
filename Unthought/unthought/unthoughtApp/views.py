@@ -9,6 +9,7 @@ import django_filters.rest_framework
 from django_filters import rest_framework as FilterSet
 from django.db.models import Q
 from django.core import serializers
+from django.core.serializers.json import DjangoJSONEncoder
 from .models import User
 from .models import Member
 from .models import MemberDp
@@ -19,6 +20,10 @@ from .models import SavePostMember
 from .models import LikedPostMember
 from .models import ProjectMember
 from .models import PostPic
+from .models import GroupText
+from .models import IndividualChatList
+from .models import IndividualText
+from .models import Help
 from .serializer import UserSerializers
 from .serializer import MemberSerializers
 from .serializer import MemberDpSerializers
@@ -35,6 +40,12 @@ from .serializer import PeopleInterestedSerializers
 from .serializer import EventsNearMeSerializers
 from .serializer import HomePostImgSerializers
 from .serializer import HomeLikedAndSavedPostCheckSerializers
+from .serializer import GroupTextSerializers
+from .serializer import RetriveTextSerializers
+from .serializer import IndividualChatListSerializers
+from .serializer import IndividualTextSerializers
+from .serializer import RetriveIndividualChatListSerializers
+from .serializer import HelpSerializers
 # Create your views here.
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -112,6 +123,32 @@ class PostPicViewSet(viewsets.ModelViewSet):
     filter_backends = (django_filters.rest_framework.DjangoFilterBackend,filters.OrderingFilter,filters.SearchFilter)
     filter_fields = ('post_id',)
 
+class GroupTextViewSet(viewsets.ModelViewSet):
+
+    queryset = GroupText.objects.all()
+    serializer_class = GroupTextSerializers
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,filters.OrderingFilter,filters.SearchFilter)
+    filter_fields = ('post_id','member_id',)
+
+class IndividualChatListViewSet(viewsets.ModelViewSet):
+
+    queryset = IndividualChatList.objects.all()
+    serializer_class = IndividualChatListSerializers
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,filters.OrderingFilter,filters.SearchFilter)
+    filter_fields = ('member_id_1','member_id_2',)
+
+class IndividualTextViewSet(viewsets.ModelViewSet):
+
+    queryset = IndividualText.objects.all()
+    serializer_class = IndividualTextSerializers
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,filters.OrderingFilter,filters.SearchFilter)
+    filter_fields = ('reciver_id','sender_id',)
+
+
+class HelpViewSet(viewsets.ModelViewSet):
+
+    queryset = Help.objects.all()
+    serializer_class = HelpSerializers
 
 class LoginValidate(APIView):
 
@@ -351,6 +388,59 @@ class HomeLikedAndSavedPostCheck(APIView):
                 return Response({
                     'detail': 'invalid action given in post request',
                 })
+        else:
+            return Response({
+                    'detail': 'correct data not given in post request',
+                })
+
+class RetriveChats(APIView):
+
+    def post(self, request, *args, **kwargs):
+        serializer = RetriveTextSerializers(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        item_id = serializer.validated_data['item_id']
+        reciver_id = serializer.validated_data['reciver_id']
+        type = serializer.validated_data['type']
+        limit = serializer.validated_data['limit']
+        start_limit = serializer.validated_data['start_limit']
+        if item_id and type and limit:
+            if type == 'group':
+                texts = GroupText.objects.filter(post_id_id = item_id).order_by('-createdAt')[start_limit:limit]
+                texts_json = json.dumps([{'member_name': o.member_name, 'createdAt': o.createdAt, 'message': o.message} for o in texts],cls=DjangoJSONEncoder)
+                return HttpResponse(texts_json, content_type='application/json')
+
+            elif type == 'personal':
+                print(item_id, reciver_id)
+                texts = IndividualText.objects.filter(sender_id_id = item_id, reciver_id_id = reciver_id).order_by('-createdAt')[start_limit:limit]
+                print(texts)
+                texts_json = json.dumps([{'sender_name': o.sender_name, 'createdAt': o.createdAt, 'message': o.message} for o in texts],cls=DjangoJSONEncoder)
+                print(texts_json)
+                return HttpResponse(texts_json, content_type='application/json')
+
+            else :
+                return Response({
+                    'detail': 'correct type not given in post request',
+                })            
+            
+        else:
+             return Response({
+                    'detail': 'correct data not given in post request',
+                })
+     
+class RetriveIndividualChatList(APIView):
+
+    def post(self, request, *args, **kwargs):
+        serializer = RetriveIndividualChatListSerializers(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        member_id = serializer.validated_data['member_id']
+
+        if member_id:
+            member_list = IndividualChatList.objects.filter( Q(member_id_1 = member_id) | Q(member_id_2 = member_id)).order_by('-last_message_date')
+            
+            member_list_json = serializers.serialize('json', member_list)
+
+            return HttpResponse(member_list_json, content_type='application/json')
+
         else:
             return Response({
                     'detail': 'correct data not given in post request',
