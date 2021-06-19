@@ -5,6 +5,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 from channels.db import database_sync_to_async
+from django.db.models.expressions import Value
 from unthoughtApp.models import GroupText
 from unthoughtApp.models import IndividualText
 from unthoughtApp.models import IndividualChatList
@@ -14,7 +15,7 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
-        print(self.room_group_name)
+        #print(self.room_group_name)
 
         await self.channel_layer.group_add(
             self.room_group_name,
@@ -37,7 +38,7 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
             my_id = text_data_json['my_id']
             message3 = text_data_json['message']
             connect_id = text_data_json['connect_id']
-            print(text_data_json)
+            #print(text_data_json)
             
             await updatelastseen(my_id,message3,connect_id,status)
             return
@@ -169,15 +170,21 @@ def updatelastseen(my_id,message,connect_id,status):
         item = IndividualChatList.objects.get(pk = int(connect_id))
         IndividualChatList.objects.filter(pk = item.pk).update(last_message = message)
         IndividualChatList.objects.filter(pk = item.pk).update(last_message_date = datetime.datetime.now() )
-        if item.member_id_1 == my_id:
+
+        a = "Member object (" + str(my_id) + ")"
+        if str(item.member_id_1) == my_id:
             IndividualChatList.objects.filter(pk = item.pk).update(member_1_seen = True)
         else:
             IndividualChatList.objects.filter(pk = item.pk).update(member_2_seen = True)
     elif status == False:
+        print("hey")
         item = IndividualChatList.objects.get(pk = int(connect_id))
-        if item.member_id_1 == my_id:
+        a = "Member object (" + str(my_id) + ")"    
+        if a == str(item.member_id_1):
+            print("hey1")
             IndividualChatList.objects.filter(pk = item.pk).update(member_1_seen = True)
         else:
+            print("hey2")
             IndividualChatList.objects.filter(pk = item.pk).update(member_2_seen = True)
     else: 
         pass

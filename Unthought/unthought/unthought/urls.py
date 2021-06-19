@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework import routers
 from unthoughtApp import views
+from rest_framework.authtoken.views import obtain_auth_token
 
 
 router = routers.DefaultRouter()
@@ -41,14 +42,21 @@ router.register(r'Help',views.HelpViewSet)
 
 urlpatterns = [
     url(r'^',include(router.urls)),
+    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    path('validate-otp/', views.ValidatePhoneSendOTP.as_view()),
     path('validate-user/', views.LoginValidate.as_view()),
     path('sorted-posts/', views.HomePost.as_view()),
+    path('post-members/', views.PostMemberRequest.as_view()),
+    path('members/', views.Members.as_view()),
     path('sorted-posts-img/', views.HomePostImg.as_view()),
+    path('saved-posts/', views.SavedPost.as_view()),
     path('sorted-posts-liked/', views.HomeLikedAndSavedPostCheck.as_view()),
     path('sorted-people-img/', views.HomePostMemberImg.as_view()),
     path('People_interested/', views.PeopleInterested.as_view()),
+    path('Trending_post/', views.TrendingProjects.as_view()),
     path('events_near_you/', views.EventsNearMe.as_view()),
     path('get_texts/', views.RetriveChats.as_view()),
+    path('empty_chat_delete/', views.DeleteEmptyChats.as_view()),
     path('individual_chat_list/', views.RetriveIndividualChatList.as_view()),
     path('chat/', include('active_zone.urls')),
     path('admin/', admin.site.urls),

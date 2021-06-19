@@ -144,7 +144,8 @@ class ProjectMemberSerializers(serializers.ModelSerializer):
         'user_id',
         'user_name',
         'user_type',
-        'active')
+        'active',
+        'sent',)
 
 class PostPicSerializers(serializers.ModelSerializer):
     class Meta:
@@ -156,7 +157,8 @@ class PostPicSerializers(serializers.ModelSerializer):
         'post_dp',
         'post_pic1',
         'post_pic2',
-        'active')
+        'active',
+        'progress_status')
 
 class LoginValidateSerializers(serializers.ModelSerializer):
     class Meta:
@@ -288,4 +290,15 @@ class HelpSerializers(serializers.ModelSerializer):
             'user_name',
             'user_number',
             'user_desc',
+        )
+
+class OtpCheckSerializers(serializers.ModelSerializer):
+    phone = serializers.CharField(max_length=10)
+
+    class Meta:
+        model =  User
+        fields = (
+            'phone',
+            'user_name',
+            'password',
         )

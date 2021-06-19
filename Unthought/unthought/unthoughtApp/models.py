@@ -98,13 +98,15 @@ class ProjectMember(models.Model):
     pri_specification_submain = models.CharField(max_length=50)
     progress_status = models.IntegerField(default=0)
     active = models.BooleanField(default=True)
+    sent = models.BooleanField(default=False)
 
 class PostPic(models.Model):
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
     post_title = models.CharField(max_length=50)
     post_dp = models.ImageField(upload_to='postPic/', height_field=None, width_field=None, default='Images/None/No0img.jpg')
     post_pic1 = models.ImageField(upload_to='postPic/', height_field=None, width_field=None, default='Images/None/No0img.jpg')
-    post_pic2 = models.ImageField(upload_to='postPic/', height_field=None, width_field=None, default='Images/None/No0img.jpg')    
+    post_pic2 = models.ImageField(upload_to='postPic/', height_field=None, width_field=None, default='Images/None/No0img.jpg')
+    progress_status = models.IntegerField(default=0) 
     active = models.BooleanField(default=True)
 
 class GroupText(models.Model):
